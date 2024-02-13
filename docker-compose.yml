@@ -1,0 +1,38 @@
+version: '3'
+
+services: 
+
+  back-end:
+    build: 
+      context: fracendpoint
+    container_name: back-end
+    working_dir: /usr/src/app
+    networks: 
+      - node-network
+    volumes: 
+      - ./fracendpoint:/usr/src/app
+      - /usr/src/app/node_modules
+    tty: true
+    ports: 
+      - "3000:3000"
+    command: node index.js
+
+  front-end:
+    build: 
+      context: frenzy
+      dockerfile: Dockerfile
+    container_name: front-end
+    working_dir: /usr/src/app
+    networks: 
+      - node-network
+    volumes: 
+      - ./frenzy:/usr/src/app
+      - /usr/src/app/node_modules
+    tty: true
+    ports: 
+      - "8000:8000"
+    command: npm run dev
+
+networks: 
+  node-network:
+    driver: bridge
